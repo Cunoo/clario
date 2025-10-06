@@ -1,18 +1,15 @@
 
 import axios from 'axios';
+import type {UserCreate, UserResponse} from "./types/User";
 
-type userServiceData = {
-    username: string;
-    password: string;
-    //email?: string;
-}
-
+const API_URL = "http://127.0.0.1:8000"
 class UserService {
 
-    async registerUser(data: userServiceData) {
-        const response = await axios.post("/users/register", data);
+    async registerUser(data: UserCreate): Promise<UserResponse> {
+        const response = await axios.post<UserResponse>(`${API_URL}/users/register`, data);
+        console.log("response", response)
         return response.data // parsed JSON response
     }
 }
 
-export default new UserService;
+export default new UserService();

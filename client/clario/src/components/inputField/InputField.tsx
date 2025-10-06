@@ -21,8 +21,8 @@ const InputField: React.FC<InputFieldProps> = ({
 }) => {
   return (
     <div>
-              <label
-      htmlFor="id"
+      <label
+      htmlFor={id}
     className="absolute left-3 top-2.5 text-gray-400 text-sm transition-all peer-placeholder-shown:top-5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-sm peer-focus:top-2.5 peer-focus:text-blue-500 peer-focus:text-xs"
 
       ></label>

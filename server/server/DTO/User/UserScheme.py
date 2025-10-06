@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 
 class UserCreate(BaseModel):
-    username: str
-    password: str
+    username: constr(min_length=1) # type: ignore
+    password: constr(min_length=1) # type: ignore
 
 
 class UserResponse(BaseModel):

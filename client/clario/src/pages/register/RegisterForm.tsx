@@ -1,24 +1,32 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect} from 'react'
 import "../../App.css";
 import InputField from '../../components/inputField/InputField';
 import UserService from '../../api/UserService';
 import SubmitButton from '../../components/submitButton/SubmitButton'
+import type { UserCreate, UserResponse } from '../../api/types/User';
+import axios from "axios";
+
 function RegisterForm() {
-    const [formData, setFormData] = useState({
-        username: '',
-        password: '',
-    });
-    const [handleRegistration, setHandleRegistraion] = useState(false);
-  
+    const [formData, setFormData] = useState<UserCreate>({
+      username: '',
+      password: '',
+    })
+    const [user, setUser] = useState<UserResponse | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       try{
-        const result = await UserService.registerUser(formData);
+        const result: UserResponse = await UserService.registerUser(formData);
         console.log("registration successful", result);
-        setHandleRegistraion(true);
-      } catch (error) {
-        console.error("Registration failed:", error);
-        setHandleRegistraion(false);
+        setUser(result);
+      } catch (error:any) {
+          const message = axios.isAxiosError(error)
+            ? error.response?.data?.detail ?? error.message
+            : "An unexpected error occurred";
+
+          console.error("Registration failed:", error);
+          setErrorMessage(message);
+          setUser(null)
       }
 
     };
@@ -48,11 +56,22 @@ function RegisterForm() {
               onChange={(value) => setFormData({ ...formData, password: value })}
 
             ></InputField>
-            <SubmitButton>Submit</SubmitButton>
+            <SubmitButton type='submit'>Submit</SubmitButton>
           </form>
+          {/* Ukážka registrovaného používateľa */}
+          {user && (
+            <div className="mt-4">
+              <p>Registered user ID: {user.id}</p>
+              <p>Username: {user.username}</p>
+            </div>
+          )}
+          {/* Ukážka registrovaného používateľa */}
+            {errorMessage && (
+              <div className="mt-4">
+                <p>Registered user ID: {errorMessage}</p>
+              </div>
+            )}
         </div>
-
-            
     )
 }
 
