@@ -10,4 +10,4 @@ router = APIRouter()
 async def user_registration(user_data: UserCreate, db: Session = Depends(get_db)):
     service = UserService(db)
     new_user = service.register_user(username=user_data.username, password=user_data.password)
-    return UserResponse.from_orm(new_user)
+    return UserResponse.model_validate(new_user)

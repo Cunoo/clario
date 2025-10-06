@@ -10,7 +10,7 @@ type userServiceData = {
 class UserService {
 
     async registerUser(data: userServiceData) {
-        const response = await axios.post("/api/register", data);
+        const response = await axios.post("/users/register", data);
         return response.data // parsed JSON response
     }
 }
