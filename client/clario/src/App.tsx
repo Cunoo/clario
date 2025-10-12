@@ -1,12 +1,10 @@
 import './App.css'
-import RegisterForm from './pages/register/RegisterForm'
-import Home from './pages/home'
+import Home from './pages/Home'
+
 function App() {
-
-
   return (
     <>
-      <RegisterForm />
+      <Home></Home>
     </>
   )
 }

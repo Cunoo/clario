@@ -5,6 +5,7 @@ import UserService from '../../api/UserService';
 import SubmitButton from '../../components/submitButton/SubmitButton'
 import type { UserCreate, UserResponse } from '../../api/types/User';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 function RegisterForm() {
     const [formData, setFormData] = useState<UserCreate>({
@@ -13,12 +14,18 @@ function RegisterForm() {
     })
     const [user, setUser] = useState<UserResponse | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isAuthenticated, setisAuthenticated] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       try{
         const result: UserResponse = await UserService.registerUser(formData);
         console.log("registration successful", result);
         setUser(result);
+        setisAuthenticated(true);
       } catch (error:any) {
           const message = axios.isAxiosError(error)
             ? error.response?.data?.detail ?? error.message
@@ -30,7 +37,6 @@ function RegisterForm() {
       }
 
     };
-
     return (
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <h1 className="font-bold text-6xl mb-16 text-center ">
