@@ -10,7 +10,9 @@ const LargeTextInput: React.FC<LargeTextInputProps> = (props) => {
     const [text, setText] = useState<string>("");
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setText(e.target.value);
+        const value = e.target.value;
+        setText(value);
+        if(props.onChange) props.onChange(value);
     }
 
 
