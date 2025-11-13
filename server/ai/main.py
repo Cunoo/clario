@@ -1,5 +1,8 @@
-from fastapi import FastAPI
+import inspect
+import pkgutil
+from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import importlib
 
 app = FastAPI()
 
@@ -16,6 +19,33 @@ app.add_middleware(
 
 )
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
+def include_controllers(app: FastAPI) -> None:
+    import controller as controllers_pkg
+    pkg_name = controllers_pkg.__name__
+    pkg_path = controllers_pkg.__path__  # type: ignore[attr-defined]
+
+    for _, mod_name, is_pkg in pkgutil.iter_modules(pkg_path):
+        if mod_name.startswith("_") or is_pkg:
+            continue
+        module = importlib.import_module(f"{pkg_name}.{mod_name}")
+
+        # Prefer export s názvom "router"
+        router = getattr(module, "router", None)
+        if isinstance(router, APIRouter):
+            app.include_router(router)
+            continue
+
+        # Fallback: nájdi hociktorý APIRouter v module
+        for _, obj in inspect.getmembers(module):
+            if isinstance(obj, APIRouter):
+                app.include_router(obj)
+
+include_controllers(app)
+
+# debug: list routes
+for r in app.router.routes:
+    try:
+        methods = ",".join(sorted(r.methods))  # type: ignore[attr-defined]
+    except Exception:
+        methods = ""
+    print(f"Route: {methods} {getattr(r, 'path', '')}")
