@@ -8,6 +8,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:8000"
+    
 ]
 
 app.add_middleware(
@@ -29,13 +30,11 @@ def include_controllers(app: FastAPI) -> None:
             continue
         module = importlib.import_module(f"{pkg_name}.{mod_name}")
 
-        # Prefer export s názvom "router"
         router = getattr(module, "router", None)
         if isinstance(router, APIRouter):
             app.include_router(router)
             continue
 
-        # Fallback: nájdi hociktorý APIRouter v module
         for _, obj in inspect.getmembers(module):
             if isinstance(obj, APIRouter):
                 app.include_router(obj)
