@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 
 interface LargeTextInputProps {
-  placeholder?: string;
-  value?: string;
-  onChange?: (value: string) => void;
-  disabled?: boolean;
+    placeholder?: string;
+    value?: string;
+    onChange?: (value: string) => void;
+    disabled?: boolean;
 }
 
 const LargeTextInput: React.FC<LargeTextInputProps> = (props) => {
@@ -29,10 +29,8 @@ const LargeTextInput: React.FC<LargeTextInputProps> = (props) => {
                 fontSize: "1rem",
                 borderRadius: "8px",
                 border: "1px solid #ccc",
-                resize: "vertical", // allow vertical resizing only
-                left: "-100px",
-                position: "relative",
-                boxSizing: "border-box", // ensures width doesn't break
+                resize: "vertical",
+                boxSizing: "border-box",
 
             }}
         />
