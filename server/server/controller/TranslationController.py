@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from db.session import get_db
 from DTO.TranslationScheme import TranslationRequest, TranslationResponse
 import httpx
+
 router = APIRouter()
 AI_SERVICE_URL = "http://127.0.0.1:8100"
 @router.post("/translateText", response_model=TranslationResponse)

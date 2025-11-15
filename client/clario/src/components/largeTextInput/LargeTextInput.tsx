@@ -4,22 +4,21 @@ interface LargeTextInputProps {
   placeholder?: string;
   value?: string;
   onChange?: (value: string) => void;
+  disabled?: boolean;
 }
 
 const LargeTextInput: React.FC<LargeTextInputProps> = (props) => {
-    const [text, setText] = useState<string>("");
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value;
-        setText(value);
-        if(props.onChange) props.onChange(value);
-    }
+        if (props.onChange) props.onChange(value);
+    };
 
 
     return (
         <>
         <textarea
-            value={text}
+            value={props.value || ""}
             onChange={handleChange}
             rows={10}        // height
             cols={60}        // width

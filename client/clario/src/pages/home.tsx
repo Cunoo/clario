@@ -7,17 +7,17 @@ import TranslationService from "../api/translation/TranslationService";
 
 const Home: React.FC = () => {
   const [text, setText] = useState("");
-  const [response, setResponse] = useState("");
+  const [translatedText, setTranslatedText] = useState("");
 
   const sendTextDebounced = useCallback(
     debounce(async (value:string) => {
       if(!value.trim()) return;
       try {
         const res = await TranslationService.sendText(value);
-        setResponse(res.message || "");
+        setTranslatedText(res.translated_text || "");
       } catch (err) {
         console.log(err);
-        setResponse("");
+        setTranslatedText("");
       }
     }, 1000), []
   )
@@ -36,12 +36,23 @@ const Home: React.FC = () => {
         }}
       >
         <LargeTextInput
+          value={text}
           placeholder="Type or paste your text here..."
           onChange={handleChange}
         ></LargeTextInput>
-        <LargeTextInput></LargeTextInput>
-        </div>
-        <LargeTextInput></LargeTextInput>
+        <LargeTextInput
+          placeholder="Translation"
+          value={translatedText}
+          disabled
+          >
+        </LargeTextInput>
+      </div>
+      <div>
+        <LargeTextInput
+          >
+        </LargeTextInput>
+      </div>
+
     </>
   );
 };

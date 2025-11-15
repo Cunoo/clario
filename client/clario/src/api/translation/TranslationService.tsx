@@ -1,19 +1,38 @@
 
 import axios from 'axios';
+import {API_BACKEND_URL} from "../../../api_list";
 
-const API_URL = "http://127.0.0.1:8000"
+const API_URL = API_BACKEND_URL;
 
-interface TextResponse {
-    message?: string;
+interface TranslationRequest {
+    src_lang: string;
+    src_text: string;
+    destination_lang: string;
 }
 
-class TranslatonService {
+interface TranslationResponse {
+    source_text: string;
+    source_lang: string;
+    translated_text: string;
+    target_lang: string
+}
 
-    async sendText(text: string): Promise<TextResponse> {
-        const response = await axios.post(`${API_URL}/text/send`, text);
-        console.log("response", response)
-        return response.data // parsed JSON response
+class TranslationService {
+    async sendText(text: string, srcLang: string = "sk", destLang: string = "en"): Promise<TranslationResponse> {
+        try {
+            const payload: TranslationRequest = {
+                src_lang: srcLang,
+                src_text: text,
+                destination_lang: destLang,
+            };
+            const response = await axios.post(`${API_URL}/translateText`, payload);
+            console.log("response", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("Translation error", error);
+            throw error;
+        }
     }
 }
 
-export default new TranslatonService();
+export default new TranslationService();

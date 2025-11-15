@@ -5,11 +5,12 @@ from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from controller.UserController import router as userRouter
 from settings import api_list
+
 app = FastAPI()
 
 origins = [
     f"{api_list.AI_SERVICE_URL}",
-    f"{api_list.FRONTEND_URL}"
+    f"{api_list.FRONTEND_URL}",
 ]
 
 app.add_middleware(
