@@ -1,29 +1,51 @@
 
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import LargeTextInput from "../components/largeTextInput/LargeTextInput";
 import debounce from "lodash.debounce";
 import TranslationService from "../api/translation/TranslationService";
+import Select from "../components/select/Select";
 
 
 const Home: React.FC = () => {
   const [text, setText] = useState("");
   const [translatedText, setTranslatedText] = useState("");
+  const [srcLang, setSrcLang] = useState("en");
+  const [dscLang, setDscLang] = useState("de");
 
-  const sendTextDebounced = useCallback(
-    debounce(async (value:string) => {
-      if(!value.trim()) return;
-      try {
-        const res = await TranslationService.sendText(value);
-        setTranslatedText(res.translated_text || "");
-      } catch (err) {
-        console.log(err);
-        setTranslatedText("");
-      }
-    }, 1000), []
-  )
+  const languages = [
+    { value: "en", label: "English" },
+    { value: "sk", label: "Slovak" },
+    { value: "cs", label: "Czech" },
+    { value: "fr", label: "French" },
+    { value: "de", label: "German" },
+  ];
+
+  const translate = async (value: string, src: string, dst: string) => {
+    if (!value.trim() || !src || !dst) return;
+    try {
+      const res = await TranslationService.sendText(value, src, dst);
+      setTranslatedText(res.translated_text || "");
+    } catch (err) {
+      console.log(err);
+      setTranslatedText("");
+    }
+  };
+
+  useEffect(() => {
+    if (text.trim() && srcLang && dscLang) {
+      translate(text, srcLang, dscLang);
+    }
+  }, [text, srcLang, dscLang]);
+
   const handleChange = (value:string) => {
     setText(value);
-    sendTextDebounced(value);
+    translate(value, srcLang, dscLang);
+  }
+  const handleSrcLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSrcLang(e.target.value);
+  }
+  const handleDescLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDscLang(e.target.value);
   }
 
   return (
@@ -33,13 +55,28 @@ const Home: React.FC = () => {
           display: "flex",          // make children in a row
           gap: "60px",              // space between them
           padding: "2rem",
+          marginTop: "3rem",
         }}
       >
         <LargeTextInput
           value={text}
           placeholder="Type or paste your text here..."
           onChange={handleChange}
-        ></LargeTextInput>
+          >
+        </LargeTextInput>
+        <Select
+          label="Source Language"
+          value={srcLang}
+          onChange={handleSrcLang}
+          options={languages}
+        />
+        <Select
+          label="Destination Language"
+          value={dscLang}
+          onChange={handleDescLang}
+          options={languages}
+        />
+        
         <LargeTextInput
           placeholder="Translation"
           value={translatedText}

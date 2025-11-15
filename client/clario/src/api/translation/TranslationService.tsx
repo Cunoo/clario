@@ -18,7 +18,7 @@ interface TranslationResponse {
 }
 
 class TranslationService {
-    async sendText(text: string, srcLang: string = "sk", destLang: string = "en"): Promise<TranslationResponse> {
+    async sendText(text: string, srcLang: string = "en", destLang: string = "de"): Promise<TranslationResponse> {
         try {
             const payload: TranslationRequest = {
                 src_lang: srcLang,
