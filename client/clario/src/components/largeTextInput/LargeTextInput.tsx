@@ -23,6 +23,7 @@ const LargeTextInput: React.FC<LargeTextInputProps> = (props) => {
             rows={10}        // height
             cols={60}        // width
             placeholder={props.placeholder}
+            className='bg-gray-900'
             style={{
                 width: "100%",
                 padding: "1rem",
@@ -31,7 +32,6 @@ const LargeTextInput: React.FC<LargeTextInputProps> = (props) => {
                 border: "1px solid #ccc",
                 resize: "vertical",
                 boxSizing: "border-box",
-
             }}
         />
         

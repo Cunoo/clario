@@ -1,10 +1,8 @@
-
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import LargeTextInput from "../components/largeTextInput/LargeTextInput";
 import debounce from "lodash.debounce";
 import TranslationService from "../api/translation/TranslationService";
 import Select from "../components/select/Select";
-
 
 const Home: React.FC = () => {
   const [text, setText] = useState("");
@@ -37,62 +35,74 @@ const Home: React.FC = () => {
     }
   }, [text, srcLang, dscLang]);
 
-  const handleChange = (value:string) => {
+  const handleChange = (value: string) => {
     setText(value);
     translate(value, srcLang, dscLang);
-  }
-  const handleSrcLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSrcLang(e.target.value);
-  }
-  const handleDescLang = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setDscLang(e.target.value);
-  }
+  };
+  const handleSrcLang = (value: string) => {
+    setSrcLang(value);
+  };
+  const handleDescLang = (value: string) => {
+    setDscLang(value);
+  };
 
   return (
     <>
       <div
         style={{
-          display: "flex",          // make children in a row
-          gap: "60px",              // space between them
+          display: "flex", // make children in a row
+          gap: "60px", // space between them
           padding: "2rem",
           marginTop: "3rem",
         }}
       >
-        <LargeTextInput
-          value={text}
-          placeholder="Type or paste your text here..."
-          onChange={handleChange}
-          >
-        </LargeTextInput>
-        <Select
-          label="Source Language"
-          value={srcLang}
-          onChange={handleSrcLang}
-          options={languages}
-        />
-        <Select
-          label="Destination Language"
-          value={dscLang}
-          onChange={handleDescLang}
-          options={languages}
-        />
-        
-        <LargeTextInput
-          placeholder="Translation"
-          value={translatedText}
-          disabled
-          >
-        </LargeTextInput>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            gap: "1rem",
+          }}
+        >
+          <Select
+            label="Source Language"
+            value={srcLang}
+            onChange={handleSrcLang}
+            options={languages}
+          />
+          <LargeTextInput
+            value={text}
+            placeholder="Type or paste your text here..."
+            onChange={handleChange}
+          />
+        </div>
+        {/* Source column */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
+            gap: "1rem",
+          }}
+        >
+          <Select
+            label="Destination Language"
+            value={dscLang}
+            onChange={handleDescLang}
+            options={languages}
+          />
+          <LargeTextInput
+            placeholder="Translation"
+            value={translatedText}
+            disabled
+          />
+        </div>
       </div>
       <div>
-        <LargeTextInput
-          >
-        </LargeTextInput>
+        <LargeTextInput></LargeTextInput>
       </div>
-
     </>
   );
 };
 
 export default Home;
-
