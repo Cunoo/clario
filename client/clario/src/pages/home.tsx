@@ -30,14 +30,16 @@ const Home: React.FC = () => {
   };
 
   useEffect(() => {
-    if (text.trim() && srcLang && dscLang) {
+    if (!text.trim() || !srcLang || !dscLang) return;
+    const handler = setTimeout(() => {
       translate(text, srcLang, dscLang);
-    }
+    }, 700);
+
+    return () => clearTimeout(handler);
   }, [text, srcLang, dscLang]);
 
   const handleChange = (value: string) => {
     setText(value);
-    translate(value, srcLang, dscLang);
   };
   const handleSrcLang = (value: string) => {
     setSrcLang(value);
