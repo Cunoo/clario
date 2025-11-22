@@ -2,8 +2,7 @@ import asyncio
 import time
 import torch
 from transformers import PegasusForConditionalGeneration, PegasusTokenizer
-from ..utils.device import DEVICE
-
+from utils.device import DEVICE
 
 
 class Paraphrase:
@@ -14,7 +13,7 @@ class Paraphrase:
         self.tokenizer = PegasusTokenizer.from_pretrained(self.model_name)
         self.model.to(self.device) # type: ignore
         self.model.eval()
-        print(f"[Summarization.__init__] Using device: {self.device}", flush=True)
+        print(f"[Paraphrase.__init__] Using device: {self.device}", flush=True)
         
     def _paraphrase(self, input_text, num_return_sequences=10, num_beams=10, max_length=60):
         batch = self.tokenizer([input_text],truncation=True,padding='longest',max_length=max_length, return_tensors="pt").to(self.device)
@@ -31,5 +30,6 @@ class Paraphrase:
         return {
             "input_text": input_text,
             "output_texts": result,
+            "number_of_sequencies": sequences
         }
         

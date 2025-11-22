@@ -3,13 +3,14 @@ import LargeTextInput from "../components/largeTextInput/LargeTextInput";
 import debounce from "lodash.debounce";
 import TranslationService from "../api/translation/TranslationService";
 import Select from "../components/select/Select";
-
+import Button from "../components/submitButton/SubmitButton";
+import ParaphraseService from "../api/paraphrase/ParaphraseService";
 const Home: React.FC = () => {
   const [text, setText] = useState("");
   const [translatedText, setTranslatedText] = useState("");
   const [srcLang, setSrcLang] = useState("en");
   const [dscLang, setDscLang] = useState("de");
-
+  const [paraphraseText, setParaphraseText] = useState("");
   const languages = [
     { value: "en", label: "English" },
     { value: "sk", label: "Slovak" },
@@ -47,6 +48,15 @@ const Home: React.FC = () => {
   const handleDescLang = (value: string) => {
     setDscLang(value);
   };
+  const handleParaphrase = async (textInput:string, lang:string, number_of_sequencies: number) => {
+    if (!textInput.trim() || !lang || !number_of_sequencies) return;
+    try {
+      const res = await ParaphraseService.sendTextToParaphrase(textInput, lang, number_of_sequencies)
+      setParaphraseText(res.output_texts.join("\n"));
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -98,10 +108,15 @@ const Home: React.FC = () => {
             value={translatedText}
             disabled
           />
-        </div>
+          <Button onClick={() => handleParaphrase(text, srcLang, 3)}>
+            Paraphrase
+          </Button>        </div>
       </div>
       <div>
-        <LargeTextInput></LargeTextInput>
+        <LargeTextInput
+          value={paraphraseText}
+          placeholder="Test"
+        ></LargeTextInput>
       </div>
     </>
   );
