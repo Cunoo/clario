@@ -48,17 +48,3 @@ class Translation:
             "target_lang": destination_lang,
         }
         
-
-
-if __name__ == "__main__":
-    translator = Translation()
-
-    async def main():
-        result = await translator.translate_language(
-            src_lang="sk",
-            src_text="Ahoj, ako sa máš?",
-            destination_lang="en",
-        )
-        print(result)
-
-    asyncio.run(main())
