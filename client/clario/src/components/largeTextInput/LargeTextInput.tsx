@@ -1,46 +1,28 @@
 import React, {useState} from 'react';
 
-interface LargeTextInputProps {
-    placeholder?: string;
-    value?: string;
-    onChange?: (value: string) => void;
-    disabled?: boolean;
-}
+type LargeTextInputProps = {
+  value: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+};
 
-const LargeTextInput: React.FC<LargeTextInputProps> = (props) => {
-
-    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const value = e.target.value;
-        if (props.onChange) props.onChange(value);
-    };
-
-
-    return (
-        <>
-        <textarea
-            value={props.value || ""}
-            onChange={handleChange}
-            rows={10}        // height
-            cols={60}        // width
-            placeholder={props.placeholder}
-            className='bg-gray-900'
-            style={{
-                width: "100%",
-                padding: "1rem",
-                fontSize: "1rem",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                resize: "vertical",
-                boxSizing: "border-box",
-            }}
-        />
-        
-        
-        
-        
-        </>
-    )
-}
+const LargeTextInput: React.FC<LargeTextInputProps> = ({
+    value,
+    onChange,
+    placeholder,
+    disabled = false,
+    className = "",
+    }) => (
+    <textarea
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
+        placeholder={placeholder}
+        disabled={disabled}
+        className={`w-full p-4 border rounded-lg focus:ring-2 focus:ring-blue-500 resize-y ${className}`}
+    />
+);
 
 
 export default LargeTextInput;

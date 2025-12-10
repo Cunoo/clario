@@ -8,7 +8,7 @@ type ButtonProps = {
   disabled?: boolean;
 };
 
-const Button: React.FC<ButtonProps> = ({
+const SubmitButton: React.FC<ButtonProps> = ({
     type = "button",
     onClick,
     children,
@@ -32,4 +32,4 @@ const Button: React.FC<ButtonProps> = ({
         );
     };
 
-export default Button;
+export default SubmitButton;
