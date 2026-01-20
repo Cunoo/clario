@@ -1,3 +1,66 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+/* Container */
+.dark-container {
+  @apply bg-gray-900 text-white;
+}
+
+.light-container {
+  @apply bg-gray-50 text-gray-800;
+}
+
+/* Header */
+.dark-header {
+  @apply bg-gray-800;
+}
+
+.light-header {
+  @apply bg-white;
+}
+
+.dark-title {
+  @apply text-blue-400;
+}
+
+.light-title {
+  @apply text-blue-600;
+}
+
+/* Buttons */
+.dark-btn {
+  @apply bg-gray-700 text-white hover:bg-gray-600;
+}
+
+.light-btn {
+  @apply bg-gray-200 text-gray-800 hover:bg-gray-300;
+}
+
+/* Cards */
+.dark-card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.light-card {
+  @apply bg-white border-gray-200;
+}
+
+/* Inputs */
+.dark-input {
+  @apply bg-gray-700 text-white border-gray-600;
+}
+
+.light-input {
+  @apply bg-white text-gray-900 border-gray-300;
+}
+
+/* Footer */
+.dark-footer {
+  @apply text-gray-400 border-gray-700;
+}
+
+.light-footer {
+  @apply text-gray-500 border-gray-200;
+}
