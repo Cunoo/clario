@@ -4,8 +4,7 @@ import pkgutil
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from controller.UserController import router as userRouter
-from settings import api_list
-
+from settings import api_list, rate_limiting
 app = FastAPI()
 
 origins = [
@@ -19,8 +18,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-
 )
+app.add_middleware(rate_limiting.RateLimitMiddleware)
 
 def include_controllers(app: FastAPI) -> None:
     import controller as controllers_pkg

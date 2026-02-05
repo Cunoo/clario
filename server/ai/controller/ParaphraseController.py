@@ -4,10 +4,10 @@ from DTO.ParaphraseScheme import ParaphraseRequest, ParaphraseResponse
 from models.Translation import Translation
 router = APIRouter()
 parahrazer = Paraphrase()
+translation = Translation()
 @router.post("/paraphraseText", response_model=ParaphraseResponse)
 async def translate_text(payload: ParaphraseRequest) -> ParaphraseResponse:
     input_for_parahrase = payload.input_text
-    translation = Translation()
     
     if payload.lang != 'en':
         translated = await translation.translate_language(
